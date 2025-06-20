@@ -10,8 +10,6 @@ router = DefaultRouter()
 router.register(r"payments", PaymentViewSet, basename="payments")
 router.register(r"users", UserViewSet, basename="users")
 
-urlpatterns = [
-
-]
+urlpatterns = []
 
 urlpatterns += router.urls

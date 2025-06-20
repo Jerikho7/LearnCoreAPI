@@ -18,7 +18,9 @@ dependencies = [
     "djangorestframework (>=3.16.0,<4.0.0)",
     "django-phonenumber-field (>=8.1.0,<9.0.0)",
     "phonenumbers (>=9.0.7,<10.0.0)",
-    "django-filter (>=25.1,<26.0)"
+    "django-filter (>=25.1,<26.0)",
+    "docutils (>=0.21.2,<0.22.0)",
+    "djangorestframework-simplejwt (>=5.5.0,<6.0.0)"
 ]
 
 

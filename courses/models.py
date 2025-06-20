@@ -2,6 +2,16 @@ from django.db import models
 
 
 class Course(models.Model):
+    """Модель курса онлайн-обучения.
+
+    Attributes:
+        title (CharField): Название курса (максимум 150 символов).
+        description (TextField): Подробное описание курса. Может быть пустым.
+        preview (ImageField): Превью изображение курса. Загружается в `courses/img/`.
+
+    Methods:
+         __str__: Возвращает строку в формате "Название - Описание".
+    """
     title = models.CharField(max_length=150, verbose_name="Название курса")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     preview = models.ImageField(upload_to="courses/img", null=True)
@@ -16,6 +26,18 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
+    """Модель урока в рамках курса.
+
+    Attributes:
+        title (CharField): Название урока (максимум 150 символов).
+        description (TextField): Содержание урока. Может быть пустым.
+        preview (ImageField): Превью изображение урока. Загружается в `lessons/img/`.
+        link (URLField): Ссылка на видео/материалы урока. Может быть пустой.
+        course (ForeignKey): Связь с родительским курсом.
+
+    Methods:
+        __str__: Возвращает строку в формате "Название - Описание".
+    """
     title = models.CharField(max_length=150, verbose_name="Название урока")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     preview = models.ImageField(upload_to="lessons/img", null=True, blank=True)
