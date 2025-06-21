@@ -7,6 +7,7 @@ class LessonSerializer(ModelSerializer):
 
     Сериализует все поля урока, включая связь с курсом.
     """
+
     class Meta:
         model = Lesson
         fields = "__all__"
@@ -22,6 +23,7 @@ class CourseSerializer(ModelSerializer):
     Methods:
         get_lesson_count: Возвращает количество уроков.
     """
+
     lesson_count = SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
 

@@ -1,8 +1,14 @@
-from django.urls import path, include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
+from rest_framework.permissions import AllowAny
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 from users.apps import UsersConfig
-from users.views import PaymentViewSet, UserViewSet
+from users.views import PaymentViewSet, UserViewSet, RegisterView
 
 app_name = UsersConfig.name
 
@@ -10,6 +16,10 @@ router = DefaultRouter()
 router.register(r"payments", PaymentViewSet, basename="payments")
 router.register(r"users", UserViewSet, basename="users")
 
-urlpatterns = []
+urlpatterns = [
+    path("register/", RegisterView.as_view(), name="register"),
+    path("login/", TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name="login"),
+    path("login/refresh/", TokenRefreshView.as_view(permission_classes=(AllowAny,)), name="refresh"),
+]
 
 urlpatterns += router.urls

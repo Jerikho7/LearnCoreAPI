@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Course(models.Model):
     """Модель курса онлайн-обучения.
@@ -12,9 +14,13 @@ class Course(models.Model):
     Methods:
          __str__: Возвращает строку в формате "Название - Описание".
     """
+
     title = models.CharField(max_length=150, verbose_name="Название курса")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
-    preview = models.ImageField(upload_to="courses/img", null=True)
+    preview = models.ImageField(upload_to="courses/img", null=True, blank=True)
+    owner = models.ForeignKey(
+        User, blank=True, null=True, related_name="courses", on_delete=models.SET_NULL, verbose_name="Владелец"
+    )
 
     class Meta:
         verbose_name = "Курс"
@@ -38,11 +44,15 @@ class Lesson(models.Model):
     Methods:
         __str__: Возвращает строку в формате "Название - Описание".
     """
+
     title = models.CharField(max_length=150, verbose_name="Название урока")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     preview = models.ImageField(upload_to="lessons/img", null=True, blank=True)
     link = models.URLField(max_length=200, null=True, blank=True)
     course = models.ForeignKey(Course, related_name="lessons", on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        User, blank=True, null=True, related_name="lessons", on_delete=models.SET_NULL, verbose_name="Владелец"
+    )
 
     class Meta:
         verbose_name = "Урок"
