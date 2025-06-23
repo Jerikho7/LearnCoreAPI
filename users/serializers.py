@@ -31,6 +31,7 @@ class RegisterSerializer(ModelSerializer):
         validate: Проверяет совпадение паролей.
         create: Создаёт нового пользователя с хэшированным паролем.
     """
+
     password = CharField(write_only=True, required=True, validators=[validate_password])
     password2 = CharField(write_only=True, required=True)
 

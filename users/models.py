@@ -16,15 +16,16 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password=None, **extra_fields):
         """Создаёт и сохраняет суперпользователя с указанным email и паролем."""
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Суперпользователь должен иметь is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Суперпользователь должен иметь is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
 
         return self.create_user(email, password, **extra_fields)
+
 
 class User(AbstractUser):
     """Кастомная модель пользователя с расширенными полями.
@@ -86,7 +87,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments", verbose_name="Пользователь")
     payment_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата оплаты")
     paid_course = models.ForeignKey(
-        'courses.Course',
+        "courses.Course",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -94,7 +95,7 @@ class Payment(models.Model):
         verbose_name="Оплаченный курс",
     )
     paid_lesson = models.ForeignKey(
-        'courses.Lesson',
+        "courses.Lesson",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

@@ -33,12 +33,10 @@ class UserViewSet(ModelViewSet):
         return User.objects.filter(id=self.request.user.id)
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = [AllowAny]
             raise NotImplementedError("Use /register/ endpoint for user creation")
         return super().get_permissions()
-
-
 
 
 class RegisterView(CreateAPIView):
@@ -47,6 +45,7 @@ class RegisterView(CreateAPIView):
     Доступные методы:
     - POST: Создать нового пользователя
     """
+
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
