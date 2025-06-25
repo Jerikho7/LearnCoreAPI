@@ -88,31 +88,28 @@ class PaymentCreateAPIView(CreateAPIView):
 
         # Создаём продукт
         product_result = create_stripe_product(course)
-        if 'error' in product_result:
-            return Response({'error': product_result['error']}, status=400)
-        product_id = product_result['product_id']
+        if "error" in product_result:
+            return Response({"error": product_result["error"]}, status=400)
+        product_id = product_result["product_id"]
 
         # Создаём цену
         price_result = create_stripe_price(course, product_id)
-        if 'error' in price_result:
-            return Response({'error': price_result['error']}, status=400)
-        price_id = price_result['price_id']
+        if "error" in price_result:
+            return Response({"error": price_result["error"]}, status=400)
+        price_id = price_result["price_id"]
 
         # Создаём сессию
         session_result = create_stripe_checkout_session(user, course, price_id)
-        if 'error' in session_result:
-            return Response({'error': session_result['error']}, status=400)
+        if "error" in session_result:
+            return Response({"error": session_result["error"]}, status=400)
 
         # Сохраняем платёж
         payment = Payment.objects.create(
             user=user,
             paid_course=course,
             amount=course.price,
-            stripe_session_id=session_result['session_id'],
-            payment_url=session_result['payment_url']
+            stripe_session_id=session_result["session_id"],
+            payment_url=session_result["payment_url"],
         )
 
-        return Response({
-            'payment_id': payment.id,
-            'payment_url': payment.payment_url
-        }, status=201)
+        return Response({"payment_id": payment.id, "payment_url": payment.payment_url}, status=201)
