@@ -12,6 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY_API = os.getenv("SECRET_KEY_API")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG") == "True" else False
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     "users",
     "courses",
     "django_filters",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [

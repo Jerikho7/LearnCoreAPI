@@ -21,6 +21,7 @@ class Course(models.Model):
     owner = models.ForeignKey(
         User, blank=True, null=True, related_name="courses", on_delete=models.SET_NULL, verbose_name="Владелец"
     )
+    price = models.PositiveIntegerField(blank=True, null=True, verbose_name="Цена за курс")
 
     class Meta:
         verbose_name = "Курс"

@@ -11,6 +11,7 @@ from courses.views import (
     LessonDestroyAPIView,
     SubscriptionView,
 )
+from users.views import PaymentCreateAPIView
 
 app_name = CoursesConfig.name
 
@@ -24,6 +25,7 @@ urlpatterns = [
     path("lesson/<int:pk>/update", LessonUpdateAPIView.as_view(), name="lesson_update"),
     path("lesson/<int:pk>/delete", LessonDestroyAPIView.as_view(), name="lesson_delete"),
     path("subscriptions/", SubscriptionView.as_view(), name="subscriptions"),
+    path('courses/<int:course_id>/payment/', PaymentCreateAPIView.as_view(), name='payment-create'),
 ]
 
 urlpatterns += router.urls
