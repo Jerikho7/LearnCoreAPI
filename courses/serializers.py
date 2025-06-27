@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
-from courses.models import Course, Lesson
+from courses.models import Course, Lesson, Subscription
 from courses.validators import YouTubeLinkValidator
 
 
@@ -65,3 +65,10 @@ class CourseSerializer(ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
+
+
+class SubscriptionSerializer(ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = "__all__"
+        read_only_fields = ("user", "subscribed_at")

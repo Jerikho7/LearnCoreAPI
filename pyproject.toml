@@ -6,26 +6,32 @@ authors = [
     {name = "Evgeniya",email = "osipova.dr17@yandex.ru"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "django (>=5.2.3,<6.0.0)",
-    "pillow (>=11.2.1,<12.0.0)",
-    "dotenv (>=0.9.9,<0.10.0)",
-    "ipython (>=9.3.0,<10.0.0)",
-    "redis (>=6.2.0,<7.0.0)",
-    "requests (>=2.32.4,<3.0.0)",
-    "djangorestframework (>=3.16.0,<4.0.0)",
-    "django-phonenumber-field (>=8.1.0,<9.0.0)",
-    "phonenumbers (>=9.0.7,<10.0.0)",
-    "django-filter (>=25.1,<26.0)",
-    "docutils (>=0.21.2,<0.22.0)",
-    "djangorestframework-simplejwt (>=5.5.0,<6.0.0)",
-    "coverage (>=7.9.1,<8.0.0)",
-    "psycopg (>=3.2.9,<4.0.0)",
-    "drf-yasg (>=1.21.10,<2.0.0)",
-    "django-cors-headers (>=4.7.0,<5.0.0)",
-    "stripe (>=12.2.0,<13.0.0)"
-]
+requires-python = ">=3.11,<4.0"
+
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+django = ">=5.2.3,<6.0.0"
+pillow = ">=11.2.1,<12.0.0"
+dotenv = ">=0.9.9,<0.10.0"
+ipython = ">=9.3.0,<10.0.0"
+redis = ">=6.2.0,<7.0.0"
+requests = ">=2.32.4,<3.0.0"
+djangorestframework = ">=3.16.0,<4.0.0"
+django-phonenumber-field = ">=8.1.0,<9.0.0"
+phonenumbers = ">=9.0.7,<10.0.0"
+django-filter = ">=25.1,<26.0"
+docutils = ">=0.21.2,<0.22.0"
+djangorestframework-simplejwt = ">=5.5.0,<6.0.0"
+coverage = ">=7.9.1,<8.0.0"
+psycopg = ">=3.2.9,<4.0.0"
+drf-yasg = ">=1.21.10,<2.0.0"
+django-cors-headers = ">=4.7.0,<5.0.0"
+stripe = ">=12.2.0,<13.0.0"
+celery = ">=5.5.3,<6.0.0"
+django-timezone-field = { version = "^6.0.1", markers = "python_version >= '3.11' and python_version < '4.0'" }
+django-celery-beat = "^2.8.1"
+rest-framework-simplejwt = "^0.0.2"
 
 
 [build-system]

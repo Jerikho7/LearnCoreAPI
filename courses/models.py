@@ -1,5 +1,4 @@
 from django.db import models
-
 from users.models import User
 
 
@@ -69,6 +68,7 @@ class Subscription(models.Model):
 
     course = models.ForeignKey(Course, related_name="subscriptions", on_delete=models.CASCADE, verbose_name="Курс")
     user = models.ForeignKey(User, related_name="subscriptions", on_delete=models.CASCADE, verbose_name="Пользователь")
+    subscribed_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Subscription"

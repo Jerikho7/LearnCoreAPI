@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -16,6 +17,7 @@ from courses.paginators import Paginator
 from courses.serializers import CourseSerializer, LessonSerializer
 from rest_framework.viewsets import ModelViewSet
 
+from courses.tasks import send_course_update_notification
 from users.permissions import IsModerator, IsOwner
 
 
@@ -55,6 +57,22 @@ class CourseViewSet(ModelViewSet):
         else:
             self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        send_course_update_notification.delay(instance.id)
+
+    @action(detail=True, methods=["post", "delete"])
+    def subscribe(self, request, pk=None):
+        course = self.get_object()
+        user = request.user
+
+        if request.method == "POST":
+            Subscription.objects.get_or_create(user=user, course=course)
+            return Response({"status": "subscribed"}, status=201)
+
+        Subscription.objects.filter(user=user, course=course).delete()
+        return Response({"status": "unsubscribed"}, status=204)
 
 
 class LessonCreateAPIView(CreateAPIView):
