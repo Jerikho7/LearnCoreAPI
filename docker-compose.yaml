@@ -37,7 +37,7 @@ services:
 
   celery:
     build: .
-    command: celery -A learncoreapi worker --loglevel=info
+    command: celery -A config worker --loglevel=info
     tty: true
     restart: on-failure
     volumes:
@@ -51,7 +51,7 @@ services:
 
   celery_beat:
     build: .
-    command: celery -A learncoreapi beat --loglevel=info
+    command: celery -A config beat --loglevel=info
     tty: true
     restart: on-failure
     volumes:

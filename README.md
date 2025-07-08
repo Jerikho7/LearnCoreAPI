@@ -1,62 +1,111 @@
-# LearnCoreAPI - Бэкенд для платформы онлайн-обучения
+# 📦 LearnCoreAPI — Django + Celery + Docker
 
-## 📌 Описание проекта
-
-LearnCoreAPI — это бэкенд-система для платформы онлайн-обучения (LMS), предоставляющая RESTful API для управления курсами и учебными материалами.
-
----
-## Основные возможности
-- Создание и управление курсами и уроками
-- Система аутентификации и авторизации пользователей
-- Загрузка учебных материалов (тексты, изображения, файлы)
-- Отслеживание прогресса обучения
-- RESTful API интерфейс
-- Поддержка PostgreSQL
-- Кэширование с Redis
-- Конфигурация через переменные окружения
-
-## 🛠 Технологии
-
-- Python 3.9+
-- Django 5.2
-- Django REST Framework 3.16
-- PostgreSQL
-- Redis
-- Poetry (управление зависимостями)
+🎓 Учебный проект на Django с использованием Docker, PostgreSQL, Celery и Redis.
 
 ---
 
-## 🚀 Установка и запуск 
-  
-1. Клонировать репозиторий:  
-   ```bash  
+## 📣 Запуск с Docker Compose
+
+Проект поддерживает запуск в контейнерах с использованием **Docker Compose**, включая:
+
+* Django-приложение
+* PostgreSQL
+* Redis
+* Celery (воркер)
+* Celery Beat (планировщик задач)
+
+---
+
+### 📦 Шаги для запуска проекта в Docker
+
+1. Убедитесь, что у вас установлены Docker и Docker Compose.
+
+   * [Установка Docker](https://docs.docker.com/get-docker/)
+   * [Установка Docker Compose](https://docs.docker.com/compose/install/)
+
+2. Клонируйте репозиторий:
+
+   ```bash
    git clone https://github.com/yourusername/LearnCoreAPI.git
    cd LearnCoreAPI
+   ```
 
-2. Установка Poetry и зависимостей.
-  ```bash
-  pip install poetry
-  ```
-Затем:  
-  ```bash    
-  poetry install.
-  ```
-3. Активация виртуального окружения
-```bash
-poetry shell  
-```  
-4. Применение миграций и создание администратора  
-```bash  
-python manage.py migrate  
-python manage.py createsuperuser 
+3. Создайте файл `.env`:
 
+   ```bash
+   cp .env.example .env
+   ```
+
+   Затем отредактируйте `.env`, указав переменные окружения (настройки БД, секретный ключ, параметры Redis и др.).
+
+4. Запустите проект:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   Эта команда создаст и запустит все контейнеры, описанные в `docker-compose.yaml`.
+
+---
+
+### 🔎 Проверка работоспособности сервисов
+
+| Сервис      | Проверка                                            |
+| ----------- | --------------------------------------------------- |
+| Django      | [http://localhost:8000](http://localhost:8000)      |
+| PostgreSQL  | `docker-compose exec db psql -U $POSTGRES_USER`     |
+| Redis       | `docker-compose exec redis redis-cli ping` → `PONG` |
+| Celery      | `docker-compose logs -f celery`                     |
+| Celery Beat | `docker-compose logs -f celery_beat`                |
+
+---
+
+### 🧠 Celery и Celery Beat
+
+Celery запускается через модуль `config`, который содержит точку входа `celery.py`.
+
+Файл `config/celery.py` должен выглядеть так:
+
+```python
+from celery import Celery
+import os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+app = Celery('config')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks()
 ```
-5. Запуск проекта  
-```bash
-python manage.py runserver  
+
+В `config/__init__.py` обязательно подключается приложение Celery:
+
+```python
+from .celery import app as celery_app
+__all__ = ("celery_app",)
 ```
 
+Команды запуска в `docker-compose.yaml`:
 
+```yaml
+celery:
+  command: celery -A config worker --loglevel=info
 
+celery_beat:
+  command: celery -A config beat --loglevel=info
+```
 
+---
 
+### ⏹️ Остановка проекта
+
+```bash
+docker-compose down
+```
+
+Чтобы также удалить tom'ы (например, с базой данных):
+
+```bash
+docker-compose down -v
+```
+
+---
