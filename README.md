@@ -1,62 +1,54 @@
-# LearnCoreAPI - Бэкенд для платформы онлайн-обучения
+## 🚀 Деплой на удалённый сервер через GitHub Actions
 
-## 📌 Описание проекта
+### 📌 Подготовка удалённого сервера
 
-LearnCoreAPI — это бэкенд-система для платформы онлайн-обучения (LMS), предоставляющая RESTful API для управления курсами и учебными материалами.
+Перед деплоем необходимо:
 
----
-## Основные возможности
-- Создание и управление курсами и уроками
-- Система аутентификации и авторизации пользователей
-- Загрузка учебных материалов (тексты, изображения, файлы)
-- Отслеживание прогресса обучения
-- RESTful API интерфейс
-- Поддержка PostgreSQL
-- Кэширование с Redis
-- Конфигурация через переменные окружения
-
-## 🛠 Технологии
-
-- Python 3.9+
-- Django 5.2
-- Django REST Framework 3.16
-- PostgreSQL
-- Redis
-- Poetry (управление зависимостями)
+1. Создать виртуальную машину (например, в Yandex Cloud).
+2. Установить на сервер:
+   - Docker
+   - Docker Compose
+3. Настроить SSH-доступ через SSH-ключ.
+4. Открыть порты:
+   - `22` (SSH)
+   - `80` (HTTP)
+5. Не нужно вручную клонировать репозиторий — это сделает GitHub Actions.
 
 ---
 
-## 🚀 Установка и запуск 
-  
-1. Клонировать репозиторий:  
-   ```bash  
-   git clone https://github.com/yourusername/LearnCoreAPI.git
-   cd LearnCoreAPI
+### 🔐 Секреты GitHub
 
-2. Установка Poetry и зависимостей.
-  ```bash
-  pip install poetry
-  ```
-Затем:  
-  ```bash    
-  poetry install.
-  ```
-3. Активация виртуального окружения
+Перейди в:  
+**Settings → Secrets and variables → Actions → New repository secret**
+
+Добавь следующие секреты:
+
+| Название                    | Значение                                         |
+|-----------------------------|--------------------------------------------------|
+| `SSH_USER`                  | логин пользователя на сервере (например, `ubuntu`) |
+| `SERVER_IP`                 | публичный IP-адрес сервера                      |
+| `SSH_KEY`                   | приватный SSH-ключ (в одном блоке, без пароля)  |
+| `DOCKER_HUB_USERNAME`       | имя пользователя Docker Hub                     |
+| `DOCKER_HUB_ACCESS_TOKEN`   | access token с правами push/pull                |
+| `DOTENV`                    | содержимое `.env` файла, одной строкой          |
+
+---
+
+### ⚙️ Как работает workflow
+
+GitHub Actions запускается при каждом `push` или `pull_request` и выполняет:
+
+1. Проверку стиля кода с помощью `flake8`
+2. Запуск тестов (`python manage.py test`)
+3. Сборку Docker-образа и загрузку его в Docker Hub
+4. Подключение по SSH и перезапуск контейнера на удалённой машине
+
+---
+
+### 🐳 Команды, выполняемые на сервере
+
 ```bash
-poetry shell  
-```  
-4. Применение миграций и создание администратора  
-```bash  
-python manage.py migrate  
-python manage.py createsuperuser 
-
-```
-5. Запуск проекта  
-```bash
-python manage.py runserver  
-```
-
-
-
-
-
+sudo docker pull <ваш-образ>
+sudo docker stop myapp || true
+sudo docker rm myapp || true
+sudo docker run -d --name myapp -p 80:8000 <ваш-образ>
