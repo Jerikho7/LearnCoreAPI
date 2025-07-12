@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-RUN mkdir -p /app/static && chmod -R 777 /app/static
+RUN mkdir -p /app/staticfiles && chmod -R 777 /app/staticfiles
 
 COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
